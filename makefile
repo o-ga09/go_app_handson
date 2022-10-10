@@ -3,8 +3,8 @@
 
 DOCKER_TAG := latest
 build:	#	build docker image to deploy
-	docker build -t taiti09/gotodo:${DOCKER_TAG}
-			--target deploy --no-cache
+	docker build -t taiti09/gotodo:${DOCKER_TAG} \
+			--target deploy ./
 	
 build-local:
 	docker compose build --no-cache

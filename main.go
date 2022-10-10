@@ -7,50 +7,43 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
-	"golang.org/x/sync/errgroup"
+	"github.com/taiti09/go_app_handson/config"
 )
 
 
 func main() {
-	if len(os.Args) != 2 {
-		log.Printf("need port number\n")
-		os.Exit(1)
-	}
-	p := os.Args[1]
-	listener, err := net.Listen("tcp",":"+p)
-	if err != nil {
-		log.Fatalf("failed to listen port: %v",err)
-	}
-	if err := run(context.Background(),listener); err != nil {
+	if err := run(context.Background()); err != nil {
 		log.Printf("failed to terminate server: %v",err)
 		os.Exit(1)
 	}
 } 
 
 func helloHandle(w http.ResponseWriter,r *http.Request) {
+	//こまんドララインから実験するため
+	time.Sleep(5*time.Second)
 	fmt.Fprintf(w,"Hello %s!",r.URL.Path[1:])
 }
 
 //テスト用コード
-func run(ctx context.Context, listener net.Listener) error {
-	s := &http.Server{
-		Handler: http.HandlerFunc(helloHandle),
+func run(ctx context.Context) error {
+	ctx, stop := signal.NotifyContext(ctx,os.Interrupt,syscall.SIGTERM)
+	defer stop()
+	cfg, err := config.New()
+	if err != nil {
+		return err
 	}
-
-	eg, ctx := errgroup.WithContext(ctx)
-	eg.Go(func() error {
-		if err := s.Serve(listener); err != nil && err != http.ErrServerClosed {
-			log.Printf("failed to close: %v",err)
-			return err
-		}
-		return nil
-	})
-
-	<-ctx.Done()
-	if err := s.Shutdown(context.Background()); err != nil {
-		log.Printf("failed to shutdown: %v", err)
+	listener, err := net.Listen("tcp",fmt.Sprintf(":%d",cfg.Port))
+	if err != nil {
+		log.Fatalf("failed to terminate server: %v",err)
 	}
+	url := fmt.Sprintf("http://%s",listener.Addr().String())
+	log.Printf("start with: %v",url)
 
-	return eg.Wait()
+	mux := NewMux()
+	s := NewServer(listener,mux)
+	return s.Run(ctx)
 }

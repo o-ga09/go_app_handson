@@ -1,6 +1,5 @@
 package main
 
-
 import (
 	"context"
 	"fmt"
@@ -12,15 +11,18 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-func TestRun(t *testing.T) {
+func TestServer_Run(t *testing.T) {
+
 	listener, err := net.Listen("tcp","localhost:0")
 	if err != nil {
 		t.Fatalf("failed to listen: %v", err)
 	}
 	ctx, cancel := context.WithCancel(context.Background())
 	eg, ctx := errgroup.WithContext(ctx)
+	mux := http.HandlerFunc(helloHandle)
 	eg.Go(func() error {
-		return run(ctx,listener)
+		s := NewServer(listener,mux)
+		return s.Run(ctx)
 	})
 	
 	in := "message"
