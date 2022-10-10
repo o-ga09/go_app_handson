@@ -13,7 +13,7 @@ RUN go build -trimpath -ldflags "-w -s" -o app
 #デプロイ用コンアテナ
 FROM centos:centos7 as deploy
 
-RUN yum update
+RUN yum -y update
 
 COPY --from=deploy-builder /app/app .
 
