@@ -7,7 +7,7 @@ on:
 name: test
 jobs:
   test:
-    runs-on:  ubuntu-latest
+    runs-on: ubuntu-latest
     services:
       mysql:
         image: mysql:8.0.29
@@ -15,7 +15,7 @@ jobs:
           --health-cmd "mysqladmin ping -h localhost"
           --health-interval 20s
           --health-timeout 10s
-          --health-retries 10s
+          --health-retries 10
         ports:
           - 3306:3306
         env:
