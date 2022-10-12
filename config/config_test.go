@@ -15,7 +15,7 @@ func TestNew(t *testing.T) {
 	}
 
 	if got.Port != wantPort {
-		t.Errorf("want %d, but %s",wantPort,got.Port)
+		t.Errorf("want %d, but %d",wantPort,got.Port)
 	}
 
 	wantEnv := "dev"
