@@ -33,3 +33,6 @@ migrate:
 
 dry-migrate:
 	mysqldef -u todo -p P@ssw0rd -h 127.0.0.1 -P 33306 todo --dry-run < ./_tools/mysql/schema.sql
+
+generate:
+	go generate ./...
