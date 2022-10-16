@@ -54,7 +54,7 @@ func New(ctx context.Context, cfg *config.Config) (*sqlx.DB, func(), error) {
 				cfg.DBName,
 			),
 		)
-	
+
 	if err != nil {
 		return nil, nil, err
 	}
