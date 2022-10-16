@@ -1,18 +1,30 @@
 package main
 
 import (
+	"context"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/taiti09/go_app_handson/config"
 )
 
 func TestNewMux(t *testing.T) {
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest(http.MethodGet,"/health",nil)
+	ctx := context.Background()
 
-	sut := NewMux()
-	sut.ServeHTTP(w,r)
+	cfg, err := config.New()
+	if err != nil {
+		t.Fatalf("failed to read config: %v",err)
+	}
+	mux, cleanup, err := NewMux(ctx,cfg)
+	if err != nil {
+		t.Fatalf("failed to run server: %v",err)
+	}
+	defer cleanup()
+	mux.ServeHTTP(w,r)
 	resp := w.Result()
 	t.Cleanup(func() { _ = resp.Body.Close()})
 
