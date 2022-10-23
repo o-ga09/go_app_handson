@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/go-redis/redis/v8"
 	"github.com/taiti09/go_app_handson/config"
 	"github.com/taiti09/go_app_handson/entity"
 )

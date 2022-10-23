@@ -8,7 +8,7 @@ import (
 
 var (
 	Tasks = &TaskStore{Tasks: map[entity.TaskID]*entity.Task{}}
-	ErrorNotFound = errors.New("not found")
+	ErrNotFound = errors.New("not found")
 )
 
 type TaskStore struct {
