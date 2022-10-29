@@ -4,12 +4,13 @@ import (
 	"context"
 	_ "embed"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/lestrrat-go/jwx/jwa"
-	"github.com/lestrrat-go/jwx/jwk"
+	"github.com/lestrrat-go/jwx/v2/jwa"
+	"github.com/lestrrat-go/jwx/v2/jwk"
 	"github.com/lestrrat-go/jwx/v2/jwt"
 	"github.com/taiti09/go_app_handson/clock"
 	"github.com/taiti09/go_app_handson/entity"
@@ -76,6 +77,7 @@ func (j *JWTer) GenerateToken(ctx context.Context, u entity.User) ([]byte, error
 
 	signed, err := jwt.Sign(tok,jwt.WithKey(jwa.RS256,j.PrivateKey))
 	if err != nil {
+		log.Fatalf("type: %T",tok)
 		return nil, err
 	}
 	return signed, nil

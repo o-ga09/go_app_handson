@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -23,6 +24,7 @@ func (l *Login) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		RespondJSON(ctx,w,&ErrResponse {
 			Message: err.Error(),
 		},http.StatusInternalServerError)
+		log.Printf("failed json decode")
 		return
 	}
 	err := l.Validator.Struct(body)
@@ -30,6 +32,7 @@ func (l *Login) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		RespondJSON(ctx,w,&ErrResponse{
 			Message: err.Error(),
 		},http.StatusBadRequest)
+		log.Printf("failed json validate")
 		return
 	}
 	jwt, err := l.Service.Login(ctx,body.UserName,body.Password)
@@ -37,6 +40,7 @@ func (l *Login) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		RespondJSON(ctx,w,&ErrResponse{
 			Message: err.Error(),
 		},http.StatusInternalServerError)
+		log.Printf("failed login authrazation")
 		return
 	}
 	rsp := struct {
