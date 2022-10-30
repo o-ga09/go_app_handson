@@ -86,7 +86,7 @@ func Test_JWTer_GetToken(t *testing.T) {
 	}
 
 	req := httptest.NewRequest(http.MethodGet,`https://github.com/taiti09`,nil)
-	req.Header.Set(`Authorozation`,fmt.Sprintf(`Bearer %s`, signed))
+	req.Header.Set(`Authorization`,fmt.Sprintf(`Bearer %s`, signed))
 	got, err := sut.GetToken(ctx,req)
 	if err != nil {
 		t.Fatalf("want no error, but got %v",err)
