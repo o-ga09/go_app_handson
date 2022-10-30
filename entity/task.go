@@ -13,6 +13,7 @@ const (
 
 type Task struct {
 	ID TaskID `json:"id" db:"id"`
+	UserID UserID `json:"user_id" db:"user_id"`
 	Title string `json:"title" db:"title"`
 	Status TaskStatus `json:"status" db:"status"`
 	Created_at time.Time `json:"create_at" db:"created_at"`
