@@ -12,7 +12,7 @@ func Authmiddleware(j *auth.JWTer) func(next http.Handler) http.Handler {
 			req, err := j.FillContext(r)
 			if err != nil {
 				RespondJSON(r.Context(),w,ErrResponse{
-					Message: "mot Found auth info",
+					Message: "not Found auth info",
 					Details: []string{err.Error()},
 				},http.StatusUnauthorized)
 				return
@@ -26,7 +26,7 @@ func AdminMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if !auth.IsAdmin(r.Context()) {
 			RespondJSON(r.Context(),w,ErrResponse{
-				Message: "mot admin",
+				Message: "not admin",
 			},http.StatusUnauthorized)
 			return
 		}
