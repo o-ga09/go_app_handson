@@ -2,7 +2,6 @@ package store
 
 import (
 	"context"
-	"regexp"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -55,10 +54,15 @@ func TestRepository_AddTask(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { _ = db.Close()})
-	mock.ExpectExec(regexp.QuoteMeta(
-		`INSERT INTO task (user_id, title, status, created_at, modified_at) VALUES (?, ?, ?, ?, ?);`)).
-		WithArgs(okTask.UserID,okTask.Title,okTask.Status,c.Now(),c.Now()).
-		WillReturnResult(sqlmock.NewResult(wantID,1))
+	mock.ExpectExec(
+		// エスケープが必要
+		`INSERT INTO task \(user_id, title, status, created, modified\) VALUES \(\?, \?, \?, \?, \?\)`,
+	).WithArgs(okTask.UserID, okTask.Title, okTask.Status, c.Now(), c.Now()).
+		WillReturnResult(sqlmock.NewResult(wantID, 1))
+	// mock.ExpectExec(
+	// 	`INSERT INTO task \(user_id, title, status, created_at, modified_at\) VALUES \(\?, \?, \?, \?, \?\)`,
+	// 	).WithArgs(okTask.UserID,okTask.Title,okTask.Status,c.Now(),c.Now()).
+	// 	WillReturnResult(sqlmock.NewResult(wantID,1))
 	
 	xdb := sqlx.NewDb(db,"mysql")
 	r := &Repository{Clocker: c}
