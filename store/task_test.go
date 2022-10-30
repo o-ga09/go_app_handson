@@ -4,7 +4,9 @@ import (
 	"context"
 	"testing"
 
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/google/go-cmp/cmp"
+	"github.com/jmoiron/sqlx"
 	"github.com/taiti09/go_app_handson/clock"
 	"github.com/taiti09/go_app_handson/entity"
 	"github.com/taiti09/go_app_handson/testutil"
@@ -33,6 +35,37 @@ func TestRepository_ListTasks(t *testing.T) {
 	}
 }
 
+func TestRepository_AddTask(t *testing.T) {
+	t.Parallel()
+	
+	ctx := context.Background()
+	c := clock.FixedClocker{}
+	var wantID int64 = 20
+	okTask := &entity.Task{
+		UserID: 33,
+		Title: "ok task",
+		Status: "todo",
+		Created_at: c.Now(),
+		Modified_at: c.Now(),
+	}
+	
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = db.Close()})
+	mock.ExpectExec(
+		`INSERT INTO task \( user_id, title, status, created_at, modified_at \) VALUE \( \?, \?, \?, \?, \? \)`,
+		).WithArgs(okTask.UserID,okTask.Title,okTask.Status,c.Now(),c.Now()).
+		WillReturnResult(sqlmock.NewResult(wantID,1))
+	
+	xdb := sqlx.NewDb(db,"mysql")
+	r := &Repository{Clocker: c}
+	if err := r.AddTask(ctx,xdb,okTask); err != nil {
+		t.Errorf("want no error, but got %v",err)
+	}
+}
+
 func prepareTasks(ctx context.Context, t *testing.T, con Execer) (entity.UserID,entity.Tasks) {
 	t.Helper()
 
@@ -50,24 +83,16 @@ func prepareTasks(ctx context.Context, t *testing.T, con Execer) (entity.UserID,
 			Title: "want task 2", Status: "todo",
 			Created_at: c.Now(), Modified_at: c.Now(),
 		},
-		{
-			UserID: userID,
-			Title: "want task 3", Status: "todo",
-			Created_at: c.Now(), Modified_at: c.Now(),
-		},
 	}
 	tasks := entity.Tasks{
 		wants[0],
 		{
 			UserID: otherUserID,
-			Title: "not want task",
-			Status: "todo",
-			Created_at: c.Now(),
-			Modified_at: c.Now(),
+			Title:  "not want task", Status: "todo",
+			Created_at: c.Now(), Modified_at: c.Now(),
 		},
 		wants[1],
 	}
-
 	result, err := con.ExecContext(ctx,`INSERT INTO task (user_id,title,status,created_at,modified_at)
 										VALUES (?,?,?,?,?),
 											   (?,?,?,?,?),
@@ -87,7 +112,7 @@ func prepareTasks(ctx context.Context, t *testing.T, con Execer) (entity.UserID,
 	tasks[0].ID = entity.TaskID(id)
 	tasks[1].ID = entity.TaskID(id + 1)
 	tasks[2].ID = entity.TaskID(id + 2)
-	return userID,tasks
+	return userID,wants
 }
 
 func prepareUser(ctx context.Context, t *testing.T, db Execer) entity.UserID {
