@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+
+        {
+            "name": "Debug API Container",
+            "type": "go",
+            "debugAdapter": "dlv-dap",
+            "request": "launch",
+            "port": 18000,
+            "host": "localhost",
+            "mode": "exec",
+            "program": "/app",
+            "substitutePath": [
+                {
+                    "from": "${workspaceFolder}",
+                    "to": "/app"
+                }
+            ]
+        }
+    ]
+}
