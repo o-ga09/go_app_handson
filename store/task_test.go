@@ -68,7 +68,7 @@ func prepareTasks(ctx context.Context, t *testing.T, con Execer) (entity.UserID,
 		wants[1],
 	}
 
-	result, err := con.ExecContext(ctx,`INSERT INTO task (user_idtitle,status,created_at,modified_at)
+	result, err := con.ExecContext(ctx,`INSERT INTO task (user_id,title,status,created_at,modified_at)
 										VALUES (?,?,?,?,?),
 											   (?,?,?,?,?),
 											   (?,?,?,?,?);`,

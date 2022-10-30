@@ -18,7 +18,7 @@ func OpenRedisForTest(t *testing.T) *redis.Client {
 		port = 6379
 	}
 	client := redis.NewClient(&redis.Options{
-		Addr: fmt.Sprintf("%s %d", host, port),
+		Addr: fmt.Sprintf("%s:%d", host, port),
 		Password: "",
 		DB: 0,
 	})

@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/lestrrat-go/jwx/jwa"
-	"github.com/lestrrat-go/jwx/jwk"
+	"github.com/lestrrat-go/jwx/v2/jwa"
+	"github.com/lestrrat-go/jwx/v2/jwk"
 	"github.com/lestrrat-go/jwx/v2/jwt"
 	"github.com/taiti09/go_app_handson/clock"
 	"github.com/taiti09/go_app_handson/entity"
@@ -27,7 +27,7 @@ func (c FixedTommorowClocker) Now() time.Time {
 }
 
 func TestEmbed(t *testing.T) {
-	want := []byte("------------BEGIN PUBLIC KEY------------")
+	want := []byte("-----BEGIN PUBLIC KEY-----")
 	if !bytes.Contains(rawPubKey,want) {
 		t.Errorf("want %s, but got %s", want, rawPubKey)
 	}

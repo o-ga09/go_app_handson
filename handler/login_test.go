@@ -46,7 +46,7 @@ func TestLogin_ServeHTTP(t *testing.T) {
 		"internal_server_error": {
 			reqFile: "testdata/login/ok_req.json.golden",
 			moq: moq {
-				err: errors.New("erre from mock"),
+				err: errors.New("error from mock"),
 			},
 			want: want {
 				status: http.StatusInternalServerError,
