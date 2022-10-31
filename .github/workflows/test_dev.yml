@@ -32,6 +32,9 @@ jobs:
           --health-retries 5
         ports:
           - 6379:6379
+        env:
+          TODO_REDIS_HOST: todo-redis
+          TODO_REDIS_PORT: 6379
     steps:
     - uses: actions/setup-go@v3
       with:
