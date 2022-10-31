@@ -1,8 +1,7 @@
 on:
   push:
     branches:
-      - "dev"
-  
+      - "dev" 
   pull_request:
 name: test
 jobs:
@@ -32,10 +31,6 @@ jobs:
           --health-retries 5
         ports:
           - 6379:6379
-        env:
-          TODO_REDIS_HOST: todo-redis
-          TODO_REDIS_PORT: 6379
-          CI: ci
     steps:
     - uses: actions/setup-go@v3
       with:
@@ -44,6 +39,6 @@ jobs:
     - run: |
         go install github.com/k0kubun/sqldef/cmd/mysqldef@latest
         mysqldef -u todo -p P@ssw0rd -h 127.0.0.1 -P 3306 todo < ./_tools/mysql/schema.sql
-    - run: go test ./...
+    - run: go test ./... -coverprofile=coverage.out
     - name: report coverage
-      uses: k1Low/octocov-action@v0
+      uses: k1LoW/octocov-action@v0
