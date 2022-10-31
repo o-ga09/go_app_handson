@@ -42,4 +42,4 @@ jobs:
         mysqldef -u todo -p P@ssw0rd -h 127.0.0.1 -P 3306 todo < ./_tools/mysql/schema.sql
     - run: go test ./...
     - name: report coverage
-      uses: k1Low/octocov-action@v0
+      uses: k1LoW/octocov-action@v0
