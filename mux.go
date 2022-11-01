@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
+	"github.com/taiti09/go_app_handson/auth"
 	"github.com/taiti09/go_app_handson/clock"
 	"github.com/taiti09/go_app_handson/config"
 	"github.com/taiti09/go_app_handson/handler"
@@ -21,17 +22,48 @@ func NewMux(ctx context.Context, cfg *config.Config) (http.Handler, func(), erro
 	if err != nil {
 		return nil, cleanup, err
 	}
-	r := store.Repository{Clocker: clock.RealClocker{}}
+	clocker := clock.RealClocker{}
+	r := store.Repository{Clocker: clocker}
+	rchi, err := store.NewKVS(ctx,cfg)
+	if err != nil {
+		return nil,cleanup,err
+	}
+	jwter, err := auth.NewJWTer(rchi,clocker)
+	if err != nil {
+		return nil,cleanup,err
+	}
+	l := &handler.Login{
+		Service: &service.Login{
+			DB: db,
+			Repo: &r,
+			TokenGenerator: jwter,
+		},
+		Validator: v,
+	}
+	r = store.Repository{Clocker: clock.RealClocker{}}
 	at := &handler.AddTask{
 		Service: &service.AddTask{DB: db, Repo: &r},
 		Validator: v,
 	}
-	mux.Post("/tasks",at.ServeHTTP)
 	lt := &handler.ListTask{
 		Service: &service.ListTask{DB: db, Repo: &r},
 		
 	}
-	mux.Get("/tasks",lt.ServeHTTP)
+
+	mux.Post("/login",l.ServeHTTP)
+
+	mux.Route("/tasks",func(r chi.Router){
+		r.Use(handler.Authmiddleware(jwter))
+        r.Get("/",lt.ServeHTTP)
+        r.Post("/",at.ServeHTTP)
+	})
+	mux.Route("/admin",func(r chi.Router) {
+		r.Use(handler.Authmiddleware(jwter),handler.AdminMiddleware)
+		r.Get("/",func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Context-type","application/json; charset=utf-8")
+			_, _ = w.Write([]byte(`{"meesage": "admin only"}`))
+		})
+	})
 	ru := &handler.RegisterUser{
 		Service: &service.RegisterUser{DB: db, Repo: &r},
 		Validator: v,
