@@ -42,7 +42,6 @@ jobs:
     - run: go test ./... -coverprofile=coverage.out
     - name: ENV
       uses: actions/checkout@v2
-      run: echo "ths is env=$CI"
       env:
         CI:
     - name: report coverage
