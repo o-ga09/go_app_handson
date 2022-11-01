@@ -42,7 +42,7 @@ jobs:
     - run: go test ./... -coverprofile=coverage.out
       env:
         CI:
-        TODO_REDIS_HOST: 6379
-        TODO_REDIS_PORT: "127.0.0.1"
+        TODO_REDIS_HOST: "127.0.0.1"
+        TODO_REDIS_PORT: 6379
     - name: report coverage
       uses: k1LoW/octocov-action@v0
