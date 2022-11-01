@@ -41,6 +41,8 @@ jobs:
         mysqldef -u todo -p P@ssw0rd -h 127.0.0.1 -P 3306 todo < ./_tools/mysql/schema.sql
     - run: go test ./... -coverprofile=coverage.out
     - name: ENV
+      uses: actions/checkout@v2
+      run: echo "ths is env=$CI"
       env:
         CI:
     - name: report coverage
