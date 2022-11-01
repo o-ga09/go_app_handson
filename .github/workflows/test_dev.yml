@@ -31,8 +31,6 @@ jobs:
           --health-retries 5
         ports:
           - 6379:6379
-        env:
-          CI:
     steps:
     - uses: actions/setup-go@v3
       with:
@@ -42,5 +40,7 @@ jobs:
         go install github.com/k0kubun/sqldef/cmd/mysqldef@latest
         mysqldef -u todo -p P@ssw0rd -h 127.0.0.1 -P 3306 todo < ./_tools/mysql/schema.sql
     - run: go test ./... -coverprofile=coverage.out
+       env:
+          CI:
     - name: report coverage
       uses: k1LoW/octocov-action@v0
