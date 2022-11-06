@@ -7,7 +7,7 @@ services:
         - target=dev
     environment:
       TODO_ENV: dev
-      PORT: "8081"
+      PORT: "8080"
       TODO_DB_HOST: tododb01
       TODO_DB_PORT: "3306"
       TODO_DB_USER: todo
@@ -18,7 +18,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "8080:8081"
+      - "8080:8080"
   tododb01:
     image: mysql:8.0.29
     platform: linux/amd64
