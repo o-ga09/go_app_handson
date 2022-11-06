@@ -40,7 +40,7 @@ jobs:
           service: hoge
           image: ${{ env.IMAGE }}
           region: ${{ env.GCP_REGION }}
-          env_var: |
+          env_vars: |
             PORT=${{ env.PORT }}
       # - name: Deploy to Cloud Run
       #   run: |
