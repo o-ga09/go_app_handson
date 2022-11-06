@@ -37,9 +37,9 @@ jobs:
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v0
         with:
-          service: $SERVICE_NAME
-          image: $IMAGE
-          region: $GCP_REGION
+          service: ${{ env.SERVICE_NAME }}
+          image: ${{ env.IMAGE }}
+          region: ${{ env.GCP_REGION }}
       # - name: Deploy to Cloud Run
       #   run: |
       #       gcloud run deploy $SERVICE_NAME \
