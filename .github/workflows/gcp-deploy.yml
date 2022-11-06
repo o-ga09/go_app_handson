@@ -40,6 +40,7 @@ jobs:
           service: ${{ env.SERVICE_NAME }}
           image: ${{ env.IMAGE }}
           region: ${{ env.GCP_REGION }}
+          port: ${{ env.PORT }}
       # - name: Deploy to Cloud Run
       #   run: |
       #       gcloud run deploy $SERVICE_NAME \
