@@ -15,7 +15,7 @@ FROM centos:centos7 as deploy
 
 RUN yum -y update
 
-EXPOSE 80
+EXPOSE "8080"
 
 COPY --from=deploy-builder /app/app .
 
