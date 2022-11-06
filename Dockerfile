@@ -15,9 +15,9 @@ FROM centos:centos7 as deploy
 
 RUN yum -y update
 
-ENV PORT "8080"
+ENV PORT "80"
 
-EXPOSE "8080"
+EXPOSE "80"
 
 COPY --from=deploy-builder /app/app .
 
