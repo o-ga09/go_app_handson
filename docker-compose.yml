@@ -18,7 +18,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "80:80"
+      - "8080:80"
   tododb01:
     image: mysql:8.0.29
     platform: linux/amd64
