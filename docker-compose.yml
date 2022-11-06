@@ -7,14 +7,14 @@ services:
         - target=dev
     environment:
       TODO_ENV: dev
-      PORT: 8081
+      PORT: "8081"
       TODO_DB_HOST: tododb01
-      TODO_DB_PORT: 3306
+      TODO_DB_PORT: "3306"
       TODO_DB_USER: todo
       TODO_DB_PASSWORD: P@ssw0rd
       TODO_DB_NAME: todo
       TODO_REDIS_HOST: todo-redis
-      TODO_REDIS_PORT: 6379
+      TODO_REDIS_PORT: "6379"
     volumes:
       - .:/app
     ports:
