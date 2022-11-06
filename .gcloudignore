@@ -1,0 +1,8 @@
+.gitignore
+.air.toml
+.octocov.yml
+.vscode/
+.github/workflows/
+.devcontainer/
+_tools/
+_HTTPrequest/
