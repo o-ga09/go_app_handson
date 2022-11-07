@@ -37,7 +37,6 @@ jobs:
         run: |
             gcloud run deploy ${{ env.SERVICE_NAME }} \
               --image ${{ env.IMAGE }} \
-              --port ${{ env.PORT }} \
               --project ${{ env.GCP_PROJECT_ID }} \
               --region ${{ env.GCP_REGION }} \
               --platform=managed \
