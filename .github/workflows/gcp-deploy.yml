@@ -28,8 +28,7 @@ jobs:
         run: gcloud auth configure-docker --quiet
 
       - name: Build a docker image
-        run: gcloud builds submit --config ./cloudbuild.yaml
-        # run: docker build -t ${{ env.IMAGE }} .
+        run: docker build -t ${{ env.IMAGE }} .
 
       - name: Push the docker image
         run: docker push ${{ env.IMAGE }}

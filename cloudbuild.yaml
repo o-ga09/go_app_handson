@@ -1,3 +1,0 @@
-steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/todo-app-20221106/todo-app', '.']

@@ -4,17 +4,17 @@ services:
     image: gotodo
     build:
       args:
-        - target=dev
+        - target=deploy-builder
     environment:
-      TODO_ENV: dev
+      TODO_ENV: prod
       PORT: "8080"
       TODO_DB_HOST: tododb01
-      TODO_DB_PORT: "3306"
+      TODO_DB_PORT: "8080"
       TODO_DB_USER: todo
       TODO_DB_PASSWORD: P@ssw0rd
       TODO_DB_NAME: todo
       TODO_REDIS_HOST: todo-redis
-      TODO_REDIS_PORT: "6379"
+      TODO_REDIS_PORT: "8080"
     volumes:
       - .:/app
     ports:
@@ -32,11 +32,11 @@ services:
       - tododb01-data:/var/lib/mysql
       - $PWD/_tools/mysql/conf.d:/etc/mysql/conf.d:cached
     ports:
-      - "33306:3306"
+      - "33306:8080"
   todo-redis:
     image: "redis:latest"
     container_name: todo-redis
     ports:
-      - "36379:6379"
+      - "36379:8080"
 volumes:
   tododb01-data:

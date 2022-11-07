@@ -9,6 +9,12 @@ build:	#	build docker image to deploy
 build-local:
 	docker compose build --no-cache
 
+build-dev:
+	docker-compose -f docker-compose.yml -f docker-compose_dev.yml build
+
+up-dev:
+	docker-compose -f docker-compose.yml -f docker-compose_dev.yml up -d
+
 up:
 	docker compose up
 
