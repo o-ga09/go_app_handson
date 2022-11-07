@@ -7,18 +7,18 @@ services:
         - target=deploy-builder
     environment:
       TODO_ENV: prod
-      PORT: "8080"
+      PORT: 8080
       TODO_DB_HOST: tododb01
-      TODO_DB_PORT: "8080"
+      TODO_DB_PORT: 8080
       TODO_DB_USER: todo
       TODO_DB_PASSWORD: P@ssw0rd
       TODO_DB_NAME: todo
       TODO_REDIS_HOST: todo-redis
-      TODO_REDIS_PORT: "8080"
+      TODO_REDIS_PORT: 8080
     volumes:
       - .:/app
     ports:
-      - "8080:8080"
+      - "80:8080"
   tododb01:
     image: mysql:8.0.29
     platform: linux/amd64
