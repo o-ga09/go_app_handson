@@ -18,27 +18,28 @@ services:
     volumes:
       - .:/app
     ports:
-      - '8080:8080'
-  tododb01:
-    image: mysql:8.0.29
-    platform: linux/amd64
-    container_name:  tododb01
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_USER: todo
-      MYSQL_PASSWORD: P@ssw0rd
-      MYSQL_DATABASE: todo
-    volumes:
-      - tododb01-data:/var/lib/mysql
-      - $PWD/_tools/mysql/conf.d:/etc/mysql/conf.d:cached
-    ports:
-      - '8080:8080'
-    command: --port 8080
-  todo-redis:
-    image: "redis:latest"
-    container_name: todo-redis
-    ports:
-      - '8080:8080'
-    command: --port 8080
-volumes:
-  tododb01-data:
+      - '18000:8080'
+#   tododb01:
+#     image: mysql:8.0.29
+#     platform: linux/amd64
+#     container_name:  tododb01
+#     environment:
+#       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+#       MYSQL_USER: todo
+#       MYSQL_PASSWORD: P@ssw0rd
+#       MYSQL_DATABASE: todo
+#       MYSQL_TCP_PORT: 8080
+#     volumes:
+#       - tododb01-data:/var/lib/mysql
+#       - $PWD/_tools/mysql/conf.d:/etc/mysql/conf.d:cached
+#     ports:
+#       - '3306:8080'
+#     command: --port 8080
+#   todo-redis:
+#     image: "redis:latest"
+#     container_name: todo-redis
+#     ports:
+#       - '6379:8080'
+#     command: --port 8080
+# volumes:
+#   tododb01-data:
