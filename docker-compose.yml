@@ -18,7 +18,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "80:8080"
+      - '18000:8080'
   tododb01:
     image: mysql:8.0.29
     platform: linux/amd64
@@ -32,11 +32,13 @@ services:
       - tododb01-data:/var/lib/mysql
       - $PWD/_tools/mysql/conf.d:/etc/mysql/conf.d:cached
     ports:
-      - "33306:8080"
+      - '33306:8080'
+    command: --port 8080
   todo-redis:
     image: "redis:latest"
     container_name: todo-redis
     ports:
-      - "36379:8080"
+      - '36379:8080'
+    command: --port 8080
 volumes:
   tododb01-data:
